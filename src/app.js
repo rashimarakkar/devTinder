@@ -1,22 +1,14 @@
-const express = require("express");
+const express  = require("express");
 const PORT = 3000;
 
 const app = express();
 
-app.get("/user", (req, res) => {
-  res.send({ firstName: "Rashid", lastName: "TP" });
-});
 
-app.post("/user", (req, res) => {
-  res.send("Saved successfully");
-});
-
-app.delete("/user", (req, res) => {
-  res.send("Deleted successfully");
-});
-
-app.use("/test", (req, res) => {
-  res.send("hellow from test");
+app.get("/user/:id/:name/:age", (req, res) => {
+  
+    console.log(req.params);
+    
+  res.send(req.params);
 });
 
 app.listen(PORT, () => {
