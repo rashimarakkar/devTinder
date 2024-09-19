@@ -3,13 +3,21 @@ const PORT = 3000;
 
 const app = express();
 
-app.use("/",(req,res)=>{
-    res.send('welcome to nodejs');
-})
+app.get("/user", (req, res) => {
+  res.send({ firstName: "Rashid", lastName: "TP" });
+});
 
-app.use("/test",(req,res)=>{
-    res.send('hellow from server');
-})
+app.post("/user", (req, res) => {
+  res.send("Saved successfully");
+});
+
+app.delete("/user", (req, res) => {
+  res.send("Deleted successfully");
+});
+
+app.use("/test", (req, res) => {
+  res.send("hellow from test");
+});
 
 app.listen(PORT, () => {
   console.log(`Server started running successfully on port ${PORT}`);
