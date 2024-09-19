@@ -1,29 +1,25 @@
-const express  = require("express");
+const express = require("express");
 const PORT = 3000;
-
 const app = express();
+const { adminAuth, userAuth } = require("./middlewares/auth");
 
-app.use("/users",(req,res,next)=>{
+app.use("/admin", adminAuth);
 
-console.log('inside first route handler');
+app.post("/user/login", (req, res) => {
+  res.send("user logged in successfully");
+});
 
-next()
-// res.send("sending from first route handler")
-},
-(req,res,next)=>{
+app.get("/user", userAuth, (req, res) => {
+  res.send("User data sent");
+});
 
-console.log('inside second route handler');
+app.get("/admin/getAllData", (req, res) => {
+  res.send("all data sent");
+});
 
-// res.send("sending from second route handler")
-next()
-},
-(req,res)=>{
-
-    console.log('inside third rout handler');
-    
-    res.send("sending from third route handler")
-}
-)
+app.delete("/admin/getAllData", (req, res) => {
+  res.send("delete a user");
+});
 
 app.listen(PORT, () => {
   console.log(`Server started running successfully on port ${PORT}`);
