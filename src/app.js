@@ -3,6 +3,10 @@ const PORT = 3000;
 
 const app = express();
 
+app.use("/",(req,res)=>{
+    res.send('welcome to nodejs');
+})
+
 app.use("/test",(req,res)=>{
     res.send('hellow from server');
 })
