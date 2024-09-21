@@ -1,6 +1,6 @@
 # DevTinder APIS
 
-## authRouter
+## Auth Router
 
 - POST  /signup
 - POST /login
