@@ -6,20 +6,20 @@
 - POST /login
 - POST /logout
 
-## profileRouter
+## Profile Router
 
 - GET /profile/view
 - GET /profile/edit
 - PATCH /profile/password
 
-## connectionRequestRouter
+## Connection Request Router
 
 - POST /request/send/intrested/:userId
 - POST /request/send/ignored/:userId
 - POST /request/review/accepted/:requestId
 - POST /request/review/rejected/:requestId
 
-## userRouter
+## User Router
 
 - GET /user/connections
 - GET /user/requests
