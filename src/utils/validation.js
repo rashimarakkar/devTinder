@@ -16,4 +16,25 @@ const validateSignupData = (req) => {
   }
 };
 
-module.exports = validateSignupData;
+const validateEditUserData= (req)=>{
+
+
+  const allowedUpdateFields = ['firstName', 'lastName', 'photoUrl', 'age', 'gender'];
+
+  const isEditAllowed = Object.keys(req.body).every((field)=> allowedUpdateFields.includes(field))
+
+  return isEditAllowed;
+
+}
+
+const validateNewPassword=(newPassword)=>{
+  return validator.isStrongPassword(newPassword, {
+    minLength: 8,
+    minLowercase: 1,
+    minUppercase: 1,
+    minNumbers: 1,
+    minSymbols: 1,
+  })
+}
+
+module.exports = {validateSignupData, validateEditUserData, validateNewPassword};

@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Password is required"],
       minLength: [6, "Password must be at least 6 characters long"],
+      select: false ,
       validate: {
         validator: function (value) {
           // Password must contain at least one letter and one number
@@ -83,7 +84,7 @@ const userSchema = new mongoose.Schema(
 
 userSchema.methods.getJwt = async function(){
   const user= this;
-  return  await jwt.sign({ _id: user._id }, "rashidjwt", {expiresIn:"0d"});
+  return  await jwt.sign({ _id: user._id }, "rashidjwt", {expiresIn:"1d"});
 }
 
 userSchema.methods.validatePassword = async function (passwordByUser) {
