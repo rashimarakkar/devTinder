@@ -1,77 +1,18 @@
 const express = require("express");
-const bcrypt = require("bcrypt");
 const PORT = 3000;
 const app = express();
 const { connectDB } = require("./config/database");
-const User = require("./models/user");
-const validateSignupData = require("./utils/validation");
 const cookieParser = require("cookie-parser");
-
-const { userAuth } = require("./middlewares/auth");
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
+const requestRouter = require("./routes/requests");
 
 app.use(express.json());
 app.use(cookieParser());
 
-app.post("/login", async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      throw new Error("user not found");
-    }
-
-    const isPasswordValid = await user.validatePassword(password);
-    if (isPasswordValid) {
-      const token = await user.getJwt();
-      res.cookie("token", token, { expires: new Date(Date.now() + 900000) });
-      res.send("login is success");
-    } else {
-      throw new Error("Invalid credentials");
-    }
-  } catch (error) {
-    res.status(400).send(error.message);
-  }
-});
-
-app.post("/signUp", async (req, res) => {
-  try {
-    validateSignupData(req);
-    const { firstName, lastName, photoUrl, password, email, age, gender } =
-      req.body;
-    const passwordHash = await bcrypt.hash(password, 10);
-
-    const user = new User({
-      firstName,
-      lastName,
-      photoUrl,
-      password: passwordHash,
-      email,
-      age,
-      gender,
-    });
-    await user.save();
-    res.send("User added successfully");
-  } catch (error) {
-    console.log(error.message);
-    res.status(400).send(error.message);
-  }
-});
-
-app.get("/profile", userAuth, async (req, res) => {
-  try {
-    const user = req.user;
-    res.send(user);
-  } catch (error) {
-    res.status(400).send(error.message);
-  }
-});
-
-app.post("/connectionRequest", userAuth, (req, res) => {
-  console.log("connectionRequest sent");
-
-  res.send("connectionRequest sent");
-});
+app.use("/", authRouter);
+app.use("/", profileRouter);
+app.use("/", requestRouter);
 
 connectDB()
   .then(() => {
