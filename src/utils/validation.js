@@ -1,4 +1,5 @@
 const validator = require("validator");
+const mongoose = require("mongoose");
 
 const validateSignupData = (req) => {
   console.log('inside validateSignupData');
