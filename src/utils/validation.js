@@ -1,6 +1,8 @@
 const validator = require("validator");
 
 const validateSignupData = (req) => {
+  console.log('inside validateSignupData');
+  
   const { firstName, lastName, photoUrl, password, email, age, gender } =
     req.body;
 
@@ -14,6 +16,7 @@ const validateSignupData = (req) => {
   } else if (!validator.isStrongPassword(password)) {
     throw new Error("enter a strong password");
   }
+
 };
 
 const validateEditUserData= (req)=>{

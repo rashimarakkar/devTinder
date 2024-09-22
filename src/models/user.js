@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Password is required"],
       minLength: [6, "Password must be at least 6 characters long"],
-      select: false ,
+      // select: false , - if we make it true can not be accessed for checking
       validate: {
         validator: function (value) {
           // Password must contain at least one letter and one number
@@ -67,15 +67,19 @@ const userSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
-      validate: {
-        validator: function (value) {
-          // Gender must be either male, female, or other
-          if (!["male", "female", "other"].includes(value)) {
-            throw new Error("Invalid gender");
-          }
-        },
-        message: "Gender must be either 'male', 'female', or 'other'",
-      },
+      enum:{
+        values: ["male", "female", "other"],
+        message:`{VALUE} is not a valid gender type`
+      }
+      // validate: {
+      //   validator: function (value) {
+      //     // Gender must be either male, female, or other
+      //     if (!["male", "female", "other"].includes(value)) {
+      //       throw new Error("Invalid gender");
+      //     }
+      //   },
+      //   message: "Gender must be either 'male', 'female', or 'other'",
+      // },
     },
   },
   { timestamps: true }
@@ -88,7 +92,12 @@ userSchema.methods.getJwt = async function(){
 }
 
 userSchema.methods.validatePassword = async function (passwordByUser) {
+  console.log('inside validatePassword function');
+  
   const user= this;
+  console.log('passwordByUser', passwordByUser);
+  console.log(user.password);
+  
   return  await bcrypt.compare(passwordByUser, user.password);
 }
 
